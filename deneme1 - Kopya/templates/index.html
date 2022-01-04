@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+
+    <main>
+
+        <section class="site-title">
+            <div class="site-background" data-aos="fade-up" data-aos-delay="100">
+
+                <h1>League Of legends Rehberine HOŞ GEELDİNİZ</h1>
+                <button class="btn">KEŞFET</button>
+            </div>
+        </section>
+
+        <br><br><br>
+        <section class="container">
+            <div class="site-content">
+                <div class="posts">
+                   {% for post in posts %}
+                    <div class="post-content" data-aos="zoom-in" data-aos-delay="200">
+                        <div class="post-image">
+                            <div>
+                                {% if post.image %}
+                                <img src="{{ post.image.url }}" style="border-radius:50px " class="img" alt="blog1">
+                                {% else %}
+                                <br>
+                                {% endif %}
+                            </div>
+                            <div class="post-info flex-row">
+                                <span><i class="fas fa-user text-gray"></i>&nbsp;&nbsp;{{post.user}}</span>
+                                <span><i class="fas fa-calendar-alt text-gray"></i>&nbsp;&nbsp;{{post.publishing_date}}</span>
+                                <span>Yorumlar</span>
+                            </div>
+                        </div>
+                        <div class="post-title">
+                            <a href="#">{{post.title}}</a>
+                            <p>{{post.content|truncatechars:500}}
+                            </p>
+                            <a href="{{post.get_absolute_url}}" class="btn post-btn">Daha Fazla &nbsp; <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <hr>
+                   {% endfor %}
+
+                    <div class="pagination flex-row">
+
+                        {% if posts.has_previous %}
+                        <a href="?page={{ posts.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="pages"><i class="fas fa-chevron-left"></i></a>
+                        {% endif %}
+
+                        <span class="current">
+                            Sayfa {{ posts.number }} of {{ posts.paginator.num_pages }}.
+                        </span>
+
+                        {% if posts.has_next %}
+                        <a href="?page={{ posts.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"><i class="fas fa-chevron-right"></i></a>
+                        {% endif %}
+                    </div>
+                </div>
+                <aside class="sidebar">
+                    <div class="category">
+                        <h2>REHBERLER</h2>
+                        <ul class="category-list">
+                            {% for item in cat %}
+                            <li class="list-items" data-aos="fade-left" data-aos-delay="100">
+
+                                <a href="{% url 'category_show' category_slug=item.slug %}">{{item.title}}</a>
+                                <br><br>#
+
+
+
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="category">
+                        <h2>Merak edilenler</h2>
+                        <ul class="category-list">
+                            <form action="" method="GET" role="search" >
+                            <li class="list-items" data-aos="fade-left" data-aos-delay="100">
+                                <label>
+                                    <input type="text" style="border: none; background: transparent; width:max-content" name="q" placeholder="Ara" value="{{ request.GET.q }}">
+                                </label>
+                                <input type="submit" value="Ara">
+                            </form>
+                        </ul>
+                    </div>
+                    <div class="popular-post">
+                        <h2>En Çok yorum Alan Post</h2>
+                        {% for item in popular_list %}
+                        <div class="post-content" data-aos="flip-up" data-aos-delay="200">
+                            <div class="post-image">
+                                <div>
+                                    {% if item.image %}
+                                    <img src="{{ item.image.url }}" class="img" alt="blog1">
+                                    {% else %}
+                                    <br>
+                                    {% endif %}
+                                </div>
+                                <div class="post-info flex-row">
+                                    <span><i class="fas fa-calendar-alt text-gray"></i>&nbsp;&nbsp;{{item.publishing_date}}</span>
+
+                                </div>
+                            </div>
+                            <div class="post-title">
+                                <a href="{{item.get_absolute_url}}">{{item.title}}</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+
+
+    </main>
+
+
+
+
+ {% endblock %}
